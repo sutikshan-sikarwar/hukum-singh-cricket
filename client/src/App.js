@@ -11,16 +11,17 @@ import LoginPage from './components/AdminLogin';
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/*" element={<HomePage/>} />
-          <Route path="/register" element={<RegistrationForm />} />
-          <Route path="/regulations" element={<Regulations />} />
-          <Route path="/admin" element={<AdminPanel />} />
-        </Routes>
-      </div>
-    </Router>
+    // <Router>
+    //   <div>
+    //     <Routes>
+    //       <Route path="/*" element={<HomePage/>} />
+    //       <Route path="/register" element={<RegistrationForm />} />
+    //       <Route path="/regulations" element={<Regulations />} />
+    //       <Route path="/admin" element={<AdminPanel />} />
+    //     </Routes>
+    //   </div>
+    // </Router>
+    <AdminPanel/>
     
   );
 }
