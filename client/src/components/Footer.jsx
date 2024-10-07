@@ -15,6 +15,7 @@ const Footer = () => {
           </a>
         </p>
         <p>Dr. Sushil Singh Thakur: 9827059094</p>
+        <p>Shri Hemant Sudan: 9827003925</p>
         <p>Shri Atul Dubey: 9826703344</p>
         <p>Shri Atul Khare 7869666985</p>
         <p>Shri Pankaj Sitoke: 9174160882 </p>
