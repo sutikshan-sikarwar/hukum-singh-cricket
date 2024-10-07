@@ -114,7 +114,7 @@ const RegistrationForm = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/team/register', {
+      const response = await axios.post('https://hukum-singh-cricket.onrender.com/api/team/register', {
         teamName,
         leagueFormat,  // Include league format in the submission
         captain,
