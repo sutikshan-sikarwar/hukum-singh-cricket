@@ -8,20 +8,22 @@ import HomePage from './components/Homepage';
 import Regulations from './components/Regulations';
 import AdminPanel from './components/AdminPanel';
 import LoginPage from './components/AdminLogin';
-
+import TeamDetails from './components/TeamDetails';
 function App() {
   return (
-    // <Router>
-    //   <div>
-    //     <Routes>
-    //       <Route path="/*" element={<HomePage/>} />
-    //       <Route path="/register" element={<RegistrationForm />} />
-    //       <Route path="/regulations" element={<Regulations />} />
-    //       <Route path="/admin" element={<AdminPanel />} />
-    //     </Routes>
-    //   </div>
-    // </Router>
-    <AdminPanel/>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/*" element={<HomePage/>} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/regulations" element={<Regulations />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/adminlogin" element={<LoginPage />} />
+          <Route path="/team/:teamId" element={<TeamDetails />} />
+        </Routes>
+      </div>
+    </Router>
+    // <AdminPanel/>
     
   );
 }

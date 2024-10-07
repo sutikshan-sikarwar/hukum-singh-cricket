@@ -26,6 +26,11 @@ const TeamSchema = new mongoose.Schema({
     type: String,
     required: true,  // Team name is required
   },
+  leagueFormat: {
+    type: String,
+    enum: ['Departmental League', 'Corporate League', 'Open Club Level League', 'Women\'s League'],
+    required: true
+  },
   captain: {
     name: {
       type: String,

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Footer from './Footer';
 
 // Cloudinary config
-const cloud_name = "dkjqtitcy";  // Replace with your Cloudinary cloud name
-const upload_preset = "blackhole";  // Replace with your Cloudinary upload preset
+const cloud_name = "dswssapvb";  // Replace with your Cloudinary cloud name
+const upload_preset = "cricket";  // Replace with your Cloudinary upload preset
 
 // Cloudinary upload function
 const uploadToCloudinary = async (file) => {
@@ -36,6 +37,7 @@ const uploadToCloudinary = async (file) => {
 
 const RegistrationForm = () => {
   const [teamName, setTeamName] = useState('');
+  const [leagueFormat, setLeagueFormat] = useState('');  // New state for league format
   const [captain, setCaptain] = useState({
     name: '',
     aadhaarNumber: '',
@@ -114,6 +116,7 @@ const RegistrationForm = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/team/register', {
         teamName,
+        leagueFormat,  // Include league format in the submission
         captain,
         players,
       });
@@ -128,99 +131,110 @@ const RegistrationForm = () => {
   return (
     <>
       {/* Navbar */}
+      <header className="bg-orange-400 py-4 shadow-md">
+  <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+    <h1 className="text-2xl font-bold text-center md:text-left">Late Hukum Singh Thakur Memorial Cricket Tournament</h1>
+    <nav className="mt-4 md:mt-0 space-x-6">
+      <a href="/*" className="text-gray-800 text-lg hover:text-gray-900">Home</a>
+      <a href="/regulations" className="text-gray-800 text-lg hover:text-gray-900">Rules and Regulations</a>
+    </nav>
+  </div>
+</header>
 
-      <nav className="bg-orange-400 p-4">
-        <div className="container mx-auto flex justify-center items-center">
-          <div className="text-white text-2xl font-bold">Hukum Singh Cricket Tournament</div> 
-        </div>
-      </nav>
-
-      <div id="rules" className="max-w-3xl mx-auto mt-10 p-5 bg-orange-200 rounded-xl shadow-md">
-        <h3 className="text-lg font-semibold mb-4">Tournament Rules</h3>
-        <ul className="list-disc pl-5 space-y-2">
-          <li>All players must adhere to the code of conduct.</li>
-          <li>Matches will be played as per the schedule provided.</li>
-          <li>Each team must consist of 11 players, with a minimum of 1 substitute.</li>
-          <li>Players must wear appropriate sports gear during matches.</li>
-          <li>Teams must report 30 minutes prior to the match time.</li>
-          <li>Umpire decisions are final and must be respected by all players.</li>
-          <li>Disrespectful behavior will lead to penalties or disqualification.</li>
-          <li>In case of a draw, a super over will decide the winner.</li>
-          <li>Team captains are responsible for submitting player details before the start of the match.</li>
-          <li>Rain delays may result in rescheduling or reduction of overs as decided by the organizing committee.</li>
-        </ul>
+      <div id="rules" className="max-w-3xl mx-auto mt-10 p-5 space-y-7 bg-orange-200 rounded-xl shadow-md">
+      <p>Note: Please carefully go through the respective rules and regulations before applying for the particular league.</p>
+      <p>नोट: कृपया संबंधित नियमों और दिशानिर्देशों को ध्यान से पढ़ें और उसके बाद ही विशेष लीग के लिए आवेदन करें।</p>
       </div>
 
       {/* Form layout */}
-      <div className="max-w-4xl mx-auto p-20 shadow-lg bg-white mt-12">
-        <h2 className="text-2xl font-bold mb-4 text-center">Team Registration</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Team Name:</label>
-            <input
-              type="text"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              required
-              className="mt-1 block w-full p-2 border rounded-md"
-            />
-          </div>
+      {/* Form layout */}
+<div className="max-w-4xl mx-auto p-6 sm:p-8 md:p-12 lg:p-20 shadow-lg bg-white mt-12">
+  <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Team Registration</h2>
+  <form onSubmit={handleSubmit} className="space-y-4">
+    <div>
+      <label className="block text-sm font-medium">Team Name:</label>
+      <input
+        type="text"
+        value={teamName}
+        onChange={(e) => setTeamName(e.target.value)}
+        required
+        className="mt-1 block w-full p-2 border rounded-md"
+      />
+    </div>
 
-          {/* Captain Section */}
-          <h3 className="text-xl font-semibold mt-6">Captain Details</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium">Captain Name:</label>
-              <input
-                type="text"
-                value={captain.name}
-                onChange={(e) => handleCaptainChange('name', e.target.value)}
-                required
-                className="mt-1 block w-full p-2 border rounded-md"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Captain Aadhaar (Format: XXXX-XXXX-XXXX):</label>
-              <input
-                type="text"
-                value={captain.aadhaarNumber}
-                onChange={(e) => handleCaptainChange('aadhaarNumber', e.target.value)}
-                required
-                className="mt-1 block w-full p-2 border rounded-md"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Captain Mobile (10 digits):</label>
-              <input
-                type="text"
-                value={captain.mobileNumber}
-                onChange={(e) => handleCaptainChange('mobileNumber', e.target.value)}
-                required
-                className="mt-1 block w-full p-2 border rounded-md"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Upload Captain's Image:</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageChange(e, true)}
-                required
-                className="mt-1 block w-full p-2 border rounded-md"
-              />
-              {/* Display Captain Image Preview */}
-              {captainImagePreview && (
-                <img src={captainImagePreview} alt="Captain Preview" className="mt-2 h-32 w-32 object-cover" />
-              )}
-            </div>
-          </div>
+    {/* League Format */}
+    <div>
+      <label className="block text-sm font-medium">League Format:</label>
+      <select
+        value={leagueFormat}
+        onChange={(e) => setLeagueFormat(e.target.value)}
+        required
+        className="mt-1 block w-full p-2 border rounded-md"
+      >
+        <option value="" disabled>Select League Format</option>
+        <option value="Departmental League">Departmental League</option>
+        <option value="Corporate League">Corporate League</option>
+        <option value="Open Club Level League">Open Club Level League</option>
+        <option value="Women's League">Women's League</option>
+      </select>
+    </div>
 
-          {/* Players Section */}
+    {/* Captain Section */}
+    <h3 className="text-lg sm:text-xl font-semibold mt-6">Captain Details</h3>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label className="block text-sm font-medium">Captain Name:</label>
+        <input
+          type="text"
+          value={captain.name}
+          onChange={(e) => handleCaptainChange('name', e.target.value)}
+          required
+          className="mt-1 block w-full p-2 border rounded-md"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Captain Aadhaar (Format: XXXX-XXXX-XXXX):</label>
+        <input
+          type="text"
+          value={captain.aadhaarNumber}
+          onChange={(e) => handleCaptainChange('aadhaarNumber', e.target.value)}
+          required
+          className="mt-1 block w-full p-2 border rounded-md"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Captain Mobile (10 digits):</label>
+        <input
+          type="text"
+          value={captain.mobileNumber}
+          onChange={(e) => handleCaptainChange('mobileNumber', e.target.value)}
+          required
+          className="mt-1 block w-full p-2 border rounded-md"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Upload Captain's Image:</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleImageChange(e, true)}
+          required
+          className="mt-1 block w-full p-2 border rounded-md"
+        />
+        {/* Display Captain Image Preview */}
+        {captainImagePreview && (
+          <img src={captainImagePreview} alt="Captain Preview" className="mt-2 h-24 w-24 sm:h-32 sm:w-32 object-cover" />
+        )}
+      </div>
+    </div>
+
+    {/* Players Section */}
 <h3 className="text-xl font-semibold mt-6">Player Details</h3>
 {players.map((player, index) => (
-  <div key={index} className="grid grid-cols-2 gap-4">
-    <h4 className="col-span-2 text-lg font-semibold">Player {index + 1} Details</h4>
-    <div>
+  <div key={index} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+    <h4 className="col-span-1 sm:col-span-2 text-lg font-semibold">Player {index + 1} Details</h4>
+    
+    <div className="col-span-1">
       <label className="block text-sm font-medium">Name:</label>
       <input
         type="text"
@@ -230,7 +244,8 @@ const RegistrationForm = () => {
         className="mt-1 block w-full p-2 border rounded-md"
       />
     </div>
-    <div>
+    
+    <div className="col-span-1">
       <label className="block text-sm font-medium">Aadhaar (Format: XXXX-XXXX-XXXX):</label>
       <input
         type="text"
@@ -240,7 +255,8 @@ const RegistrationForm = () => {
         className="mt-1 block w-full p-2 border rounded-md"
       />
     </div>
-    <div>
+    
+    <div className="col-span-1">
       <label className="block text-sm font-medium">Mobile (10 digits):</label>
       <input
         type="text"
@@ -250,7 +266,8 @@ const RegistrationForm = () => {
         className="mt-1 block w-full p-2 border rounded-md"
       />
     </div>
-    <div>
+    
+    <div className="col-span-1">
       <label className="block text-sm font-medium">Upload Image:</label>
       <input
         type="file"
@@ -268,27 +285,22 @@ const RegistrationForm = () => {
 ))}
 
 
-          {/* Submit Button */}
+    {/* Submit Button */}
+    <div className='mt-4 flex'>
+      <button type="submit" className="mt-2 px-8 sm:px-10 md:px-12 py-2 mx-auto text-md sm:text-lg bg-orange-500 text-white rounded-lg">
+        Register Team
+      </button>
+    </div>
+  </form>
 
-          <div className='mt-4 flex '>
-          <button type="submit" className="mt-2 px-12 py-2 mx-auto text-lg bg-orange-500 text-white rounded-lg">
-            Register Team
-          </button>
-          </div>
-        </form>
         <div className='flex'>
-        {message && <p className="mt-4 mx-auto text-green-600">{message}</p>}
+          {message && <p className="mt-4 mx-auto text-green-600">{message}</p>}
         </div>
       </div>
 
-       <footer className="bg-gray-400 text-white p-6 mt-10">
-        <div className="container mx-auto text-center">
-          © 2024 Hukum Singh Cricket Tournament
-        </div>
-      </footer>
+      <Footer/>
     </>
   );
 };
 
 export default RegistrationForm;
-

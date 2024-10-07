@@ -8,11 +8,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-orange-400 text-white py-3 px-6 flex justify-between items-center relative">
+    <nav className="bg-orange-400 text-white py-3 px-4 sm:px-6 flex justify-between items-center relative">
       {/* Logo / Title */}
       <div className="flex items-center space-x-4">
-        <span className="text-xl md:text-2xl font-medium">
-          Hukum Singh Thakur Cricket Tournament
+        <span className="text-sm sm:text-base md:text-xl lg:text-2xl font-medium">
+          Late Hukum Singh Thakur Memorial Cricket Tournament
         </span>
       </div>
 
@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="md:hidden relative">
         <button onClick={toggleMenu} className="focus:outline-none">
           <svg
-            className="w-8 h-8 text-white"
+            className="w-6 h-6 sm:w-8 sm:h-8 text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,18 +37,18 @@ const Navbar = () => {
 
         {/* Popup Menu for mobile screens */}
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-orange-500 text-white rounded-lg shadow-lg z-50">
-            <a href="/admin" className="block px-4 py-2 hover:bg-orange-600">Admin Panel</a>
-            <a href="/register" className="block px-4 py-2 hover:bg-orange-600">Apply for Tournament</a>
-            <a href="/regulations" className="block px-4 py-2 hover:bg-orange-600">Rules & Regulations</a>
+          <div className="absolute right-0 mt-2 w-40 sm:w-48 bg-orange-500 text-white rounded-lg shadow-lg z-50">
+            <a href="/adminlogin" className="block px-3 py-2 sm:px-4 hover:bg-orange-600">Admin Panel</a>
+            <a href="/register" className="block px-3 py-2 sm:px-4 hover:bg-orange-600">Apply Now</a>
+            <a href="/regulations" className="block px-3 py-2 sm:px-4 hover:bg-orange-600">Rules & Regulations</a>
           </div>
         )}
       </div>
 
       {/* Links for larger screens */}
-      <div className="hidden md:flex text-base md:text-lg space-x-6">
-        <a href="#" className="hover:underline">Admin Panel</a>
-        <a href="/register" className="hover:underline">Apply for Tournament</a>
+      <div className="hidden md:flex text-sm sm:text-base md:text-lg space-x-4 sm:space-x-6">
+        <a href="/adminlogin" className="hover:underline">Admin Panel</a>
+        <a href="/register" className="hover:underline">Apply Now</a>
         <a href="/regulations" className="hover:underline">Rules & Regulations</a>
       </div>
     </nav>
