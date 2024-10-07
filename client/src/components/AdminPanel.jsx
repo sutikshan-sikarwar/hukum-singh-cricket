@@ -23,7 +23,7 @@ const Dashboard = () => {
     const fetchTeams = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/team/league/${selectedLeagueFormat}` // Update to fetch by league format
+          `https://hukum-singh-cricket.onrender.com/api/team/league/${selectedLeagueFormat}` // Update to fetch by league format
         );
         setTeams(response.data);
       } catch (error) {
@@ -39,7 +39,7 @@ const Dashboard = () => {
     const fetchTotalForms = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/team/totalforms"
+          "https://hukum-singh-cricket.onrender.com/api/team/totalforms"
         ); // Adjust with your total forms API endpoint
         setTotalForms(response.data.totalForms);
       } catch (error) {
