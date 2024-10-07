@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className="bg-orange-400 text-white py-3 px-4 sm:px-6 flex justify-between items-center relative">
       {/* Logo / Title */}
       <div className="flex items-center space-x-4">
-        <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium">
+        <span className="text-lg pr-4 sm:text-lg md:text-xl lg:text-2xl font-medium ">
           Late Hukum Singh Thakur Memorial Cricket Tournament
         </span>
       </div>
