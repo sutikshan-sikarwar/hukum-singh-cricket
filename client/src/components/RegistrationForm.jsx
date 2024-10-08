@@ -287,7 +287,7 @@ const RegistrationForm = () => {
 
     {/* Submit Button */}
     <div className='mt-4 flex'>
-      <button type="submit" className="mt-2 px-8 sm:px-10 md:px-12 py-2 mx-auto text-md sm:text-lg bg-orange-500 text-white rounded-lg">
+      <button type="submit" className="mt-2 px-8 sm:px-10 md:px-12 py-2 mx-auto text-md sm:text-lg bg-orange-500 hover:bg-orange-600 text-white rounded-lg">
         Register Team
       </button>
     </div>
