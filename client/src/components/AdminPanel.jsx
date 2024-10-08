@@ -221,7 +221,7 @@ const Dashboard = () => {
               Download all the forms in PDF format
             </h3>
             <button
-              className="bg-black w-8/12 text-lg sm:text-xl my-1 md:my-0 mx-auto text-white py-2 rounded-xl"
+              className="bg-gray-900 hover:bg-black w-8/12 text-lg sm:text-xl my-1 md:my-0 mx-auto text-white py-2 rounded-xl"
               onClick={generateAllPDFs}
             >
               Download All
