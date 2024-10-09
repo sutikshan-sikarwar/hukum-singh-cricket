@@ -82,7 +82,7 @@ const Dashboard = () => {
     const doc = new jsPDF();
     const pageHeight = doc.internal.pageSize.height; // Get page height
     let yOffset = 20; // Initial Y offset
-
+  
     const addPageIfNeeded = (yPos) => {
       if (yPos >= pageHeight - 30) { // Leave margin at bottom
         doc.addPage();
@@ -90,67 +90,69 @@ const Dashboard = () => {
       }
     };
 
-    // Adding title
-    doc.setFontSize(22);
-    doc.text(team.teamName, 20, yOffset);
-    yOffset += 10;
+     // Adding title
+  doc.setFontSize(22);
+  doc.text(team.teamName, 20, yOffset);
+  yOffset += 10;
 
-    // Adding captain information
-    doc.setFontSize(16);
-    doc.text("Captain Details (Player 1)", 20, yOffset);
-    yOffset += 10;
+  // Adding captain information
+  doc.setFontSize(16);
+  doc.text("Captain Details (Player 1)", 20, yOffset);
+  yOffset += 10;
 
     // Fetch and add captain's image
     const captainImage = await convertImageToBase64(team.captain.imageUrl);
-    if (isValidBase64(captainImage)) {
-      doc.addImage(captainImage, "PNG", 150, yOffset - 5, 40, 40);
-    } else {
-      console.warn("Invalid base64 image data for captain.");
-    }
+  if (isValidBase64(captainImage)) {
+    doc.addImage(captainImage, "PNG", 150, yOffset - 5, 40, 40);
+  } else {
+    console.warn("Invalid base64 image data for captain.");
+  }
 
     // Adding captain details
-    doc.setFontSize(12);
-    doc.text(`Name: ${team.captain.name}`, 20, yOffset + 10);
-    doc.text(`Aadhaar: ${team.captain.aadhaarNumber}`, 20, yOffset + 20);
-    doc.text(`Mobile: ${team.captain.mobileNumber}`, 20, yOffset + 30);
-    yOffset += 50;
+  doc.setFontSize(12);
+  doc.text(`Name: ${team.captain.name}`, 20, yOffset + 10);
+  doc.text(`Aadhaar: ${team.captain.aadhaarNumber}`, 20, yOffset + 20);
+  doc.text(`Mobile: ${team.captain.mobileNumber}`, 20, yOffset + 30);
+  yOffset += 50;
 
-    addPageIfNeeded(yOffset); // Check if we need to add a new page
+  addPageIfNeeded(yOffset); // Check if we need to add a new page
 
-    // Adding players information
-    doc.setFontSize(16);
-    doc.text("Players Details", 20, yOffset);
-    yOffset += 10;
+  // Adding players information
+  doc.setFontSize(16);
+  doc.text("Players Details", 20, yOffset);
+  yOffset += 10;
 
-    for (let i = 0; i < team.players.length; i++) {
-      const player = team.players[i];
+  for (let i = 0; i < team.players.length; i++) {
+    const player = team.players[i];
 
-      // Player title
-      doc.setFontSize(14);
-      doc.text(`Player ${i + 2}:`, 20, yOffset);
+    // Player title
+    doc.setFontSize(14);
+    doc.text(`Player ${i + 2}:`, 20, yOffset);
 
-      // Fetch and add player's image
-      const playerImage = await convertImageToBase64(player.imageUrl);
-      if (isValidBase64(playerImage)) {
-        doc.addImage(playerImage, "PNG", 150, yOffset - 5, 40, 40);
-      } else {
-        console.warn(`Invalid base64 image data for player ${player.name}`);
-      }
+    // Fetch and add player's image
+    const playerImage = await convertImageToBase64(player.imageUrl);
+    if (isValidBase64(playerImage)) {
+      doc.addImage(playerImage, "PNG", 150, yOffset - 5, 40, 40);
+    } else {
+      console.warn(`Invalid base64 image data for player ${player.name}`);
+    }
 
       // Adding player details
       doc.setFontSize(12);
       doc.text(`Name: ${player.name}`, 20, yOffset + 10);
       doc.text(`Aadhaar: ${player.aadhaarNumber}`, 20, yOffset + 20);
       doc.text(`Mobile: ${player.mobileNumber}`, 20, yOffset + 30);
-
+  
       yOffset += 50; // Move down for the next player
-
+  
       addPageIfNeeded(yOffset); // Check if we need to add a new page
     }
-
-    // Save the PDF
+  
+    // Ensure the PDF is saved only after all images and content are added
     doc.save(`${team.teamName}-details.pdf`);
   };
+  
+
 
   // Function to generate individual PDFs for all teams
   const generateAllPDFs = () => {
@@ -221,7 +223,7 @@ const Dashboard = () => {
               Download all the forms in PDF format
             </h3>
             <button
-              className="bg-gray-900 hover:bg-black w-8/12 text-lg sm:text-xl my-1 md:my-0 mx-auto text-white py-2 rounded-xl"
+              className="bg-black w-8/12 text-lg sm:text-xl my-1 md:my-0 mx-auto text-white py-2 rounded-xl"
               onClick={generateAllPDFs}
             >
               Download All
