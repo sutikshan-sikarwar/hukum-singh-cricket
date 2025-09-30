@@ -1,6 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ExploreMore = () => {
+  const navigate = useNavigate();
+
+  const handleApplyNow = () => {
+    navigate('/');
+    // The modal will be handled by the Homepage component
+    setTimeout(() => {
+      const applyButton = document.querySelector('[data-apply-now]');
+      if (applyButton) {
+        applyButton.click();
+      }
+    }, 100);
+  };
+
   const cards = [
     { image: 'tournament1.png' },
     { image: 'tournament8.png' },
@@ -38,7 +52,7 @@ const ExploreMore = () => {
           <ul>
             <li className="text-lg text-gray-900 font-semibold"><a href="/*">Tournament Schedule</a></li>
             <li className="text-lg text-gray-900 mb-3">15 October - 15 November</li>
-            <li className="text-lg text-gray-900 hover:text-orange-600 font-semibold mb-3"><a href="/register">Apply Now</a></li>
+            <li className="text-lg text-gray-900 hover:text-orange-600 font-semibold mb-3"><button onClick={handleApplyNow}>Apply Now</button></li>
             <li className="text-lg text-gray-900 hover:text-orange-600 font-semibold mb-3"><a href="/regulations">Tournament Rules</a></li>
           </ul>
         </div>

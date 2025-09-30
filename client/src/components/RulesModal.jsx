@@ -1,0 +1,259 @@
+import React, { useState, useEffect, useRef } from 'react';
+
+const RulesModal = ({ isOpen, onClose, onProceed }) => {
+  const [hasReadRules, setHasReadRules] = useState(false);
+  const [showTickBox, setShowTickBox] = useState(false);
+  const [isEnglish, setIsEnglish] = useState(false); // true for English, false for Hindi
+  const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    let timeoutId;
+    let lastScrollTop = 0;
+    
+    const handleScroll = () => {
+      const container = scrollContainerRef.current;
+      if (container) {
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+        
+        // Show tick box when user has scrolled to 90% of the content
+        const isNearBottom = scrollPercentage >= 0.9;
+        
+        // Only update state if there's a significant change to prevent flickering
+        if (Math.abs(scrollTop - lastScrollTop) > 10) {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            setShowTickBox(isNearBottom);
+            lastScrollTop = scrollTop;
+          }, 150);
+        }
+      }
+    };
+
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      // Check initial scroll position
+      handleScroll();
+      
+      return () => {
+        clearTimeout(timeoutId);
+        container.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [isOpen]);
+
+  // Reset states when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setHasReadRules(false);
+      setShowTickBox(false);
+      setIsEnglish(false); // Default to Hindi
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleProceed = () => {
+    if (hasReadRules) {
+      onProceed();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-bold text-center flex-1">
+            {isEnglish ? 'Tournament Rules & Regulations' : 'नियम व दिशा-निर्देश'}
+          </h2>
+          <div className="flex items-center space-x-4">
+            {/* Language Toggle */}
+            <div className="flex items-center space-x-2">
+              <span className={`text-sm ${!isEnglish ? 'text-orange-600 font-semibold' : 'text-gray-500'}`}>
+                हिंदी
+              </span>
+              <button
+                onClick={() => {
+                  setIsEnglish(!isEnglish);
+                  setShowTickBox(false); // Reset tick box when switching language
+                }}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  isEnglish ? 'bg-gray-300' : 'bg-orange-500'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    isEnglish ? 'translate-x-1' : 'translate-x-6'
+                  }`}
+                />
+              </button>
+              <span className={`text-sm ${isEnglish ? 'text-orange-600 font-semibold' : 'text-gray-500'}`}>
+                English
+              </span>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold ml-4"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Content */}
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6">
+          {isEnglish ? (
+            // English Content
+            <div className="space-y-8">
+              <h2 className="text-2xl font-normal text-center mt-12 mb-6">Departmental League</h2>
+              <ol className="list-decimal p-3 list-inside space-y-4 text-base">
+                <li>The tournament entry fee is twenty-five thousand rupees (Rs. 25,000/-) only.</li>
+                <li>The tournament will be played with a white leather ball and in colored dress.</li>
+                <li>Jerseys (T-shirts) will be provided by the committee, and it is mandatory to wear them during the matches.</li>
+                <li>Matches will be played during the day, evening, and night under floodlights.</li>
+                <li>The tournament will be conducted in T-20 format according to the rules set by BCCI and ICC.</li>
+                <li>This league is a knockout tournament.</li>
+                <li>Teams will select the final 11 players from the list of 15 players provided initially; players outside the list of 15 are not eligible.</li>
+                <li>A player is allowed to play for only one team in any league of the tournament.</li>
+                <li>It is mandatory for players to be employees of the department related to their team.</li>
+                <li>Teams must arrive at the venue one hour before the allotted match time.</li>
+                <li>If a match is canceled due to any weather-related situation (rain) or any technical error, the decision will be made by the umpire and committee.</li>
+                <li>The final team will be awarded a trophy and cash prize.</li>
+                <li>Best batsman, best bowler, best wicket-keeper, best fielder, man of the match, man of the series, and several other awards will be given.</li>
+                <li>The committee has the full authority to change the tournament plan or make sudden necessary changes during the tournament.</li>
+                <li>Participants of the team must follow safety protocols/procedures.</li>
+                <li>Teams must maintain proper discipline and have the appropriate kit.</li>
+                <li>The committee will not be responsible for any disputes during the tournament.</li>
+                <li>The umpire's decision will be final and binding.</li>
+              </ol>
+
+              <h2 className="text-2xl font-normal text-center mt-12 mb-6">Corporate League</h2>
+              <ol className="list-decimal p-3 list-inside space-y-4 text-base">
+                <li>The tournament entry fee is Rs. 25,000/- only.</li>
+                <li>The tournament will be played with a white leather ball and colored uniforms.</li>
+                <li>Jerseys (T-shirts) will be provided by the committee, and it is mandatory to wear them during the matches.</li>
+                <li>The matches will be played during the day, evening, and night under floodlights.</li>
+                <li>The tournament will follow the T-20 format under the rules prescribed by BCCI and ICC.</li>
+                <li>This league is a limited knockout tournament.</li>
+                <li>A player is allowed to play for only one team in one league of the tournament.</li>
+                <li>No departmental employees (government employees) are allowed to participate in this league.</li>
+                <li>Players who have played in Ranji Trophy, List A, or higher-level tournaments are not allowed to participate in this league.</li>
+                <li>Only players who played at MP level or other state levels more than 5 years ago are eligible to participate in this league.</li>
+                <li>No player should have been part of any registered academy/club in the last 3 years.</li>
+                <li>Teams will select the final 11 players from the initially provided list of 15 players, and no player outside the list of 15 will be allowed.</li>
+                <li>Teams are required to arrive at the venue at least 1 hour before the scheduled match time.</li>
+                <li>If the match is abandoned due to weather conditions (rain) or any technical issue, the decision will be made by the umpire and committee.</li>
+                <li>The winning team will be awarded the trophy and a cash prize.</li>
+                <li>Best batsman, best bowler, best wicketkeeper, best fielder, Man of the Match, Man of the Series, and other awards will be given.</li>
+                <li>The committee reserves the right to make changes to the tournament plan or any adjustments required during the tournament.</li>
+                <li>Participants must follow all safety protocols/procedures.</li>
+                <li>Teams must maintain discipline and have appropriate kits.</li>
+                <li>The committee will not be responsible for any disputes that arise during the tournament.</li>
+                <li>The umpire's decision will be final and binding.</li>
+              </ol>
+            </div>
+          ) : (
+            // Hindi Content
+            <div className="space-y-8">
+              <h2 className="text-2xl font-normal text-center mt-12 mb-6">विभागीय लीग</h2>
+              <ol className="list-decimal p-3 list-inside space-y-4 text-base">
+                <li>टूर्नामेंट एंट्री फीस पच्चीस हज़ार रुपये (रु.25,000/-) मात्र है।</li>
+                <li>टूर्नामेंट सफ़ेद लेदर बॉल से, कलर ड्रेस में खेला जायेगा।</li>
+                <li>जर्सी (T-shirt) समिति द्वारा दी जाएगी, मैचों में इसे पहनना अनिवार्य होगा।</li>
+                <li>टूर्नामेंट के मैच दिन, शाम व रात्रि में दूधिया रोशनी (Light) में खेले जायेंगे।</li>
+                <li>टूर्नामेंट T-20 फॉर्मेट में BCCI और ICC के द्वारा निर्धारित नियमों के अनुसार खेला जायेगा।</li>
+                <li>यह लीग कम नॉक-आउट टूर्नामेंट है।</li>
+                <li>टीम प्रारम्भ में दिये गये 15 खिलाडियों की सूचि में से ही अंतिम 11 खिलाडियों का चयन करेगी, 15 खिलाडियों की सूचि से बाहर का खिलाडी मान्य नहीं है।</li>
+                <li>एक खिलाडी को टूर्नामेंट की किसी एक लीग में एक ही टीम से खेलने का अधिकार होगा।</li>
+                <li>इस लीग में खिलाडी का टीम से सम्बंधित विभाग का कर्मचारी होना अनिवार्य है।</li>
+                <li>टीमों को आवंटित मैच समय के 1 घंटा पहले आयोजन स्थल पर पहुंचना अनिवार्य है।</li>
+                <li>यदि मैच किसी भी मौसम से संबंधित स्थिति (बारिश) या किसी तकनीकी त्रुटि के कारण धुल जाता है। तो मैच का निर्णय अंपायर व समिति अनुसार होगा।</li>
+                <li>फाइनल टीम को ट्रॉफी और नकद पुरस्कार से सम्मानित किया जाएगा।</li>
+                <li>सर्वश्रेष्ठ बल्लेबाज, सर्वश्रेष्ठ गेंदबाज, सर्वश्रेष्ठ विकेट कीपर, सर्वश्रेष्ठ क्षेत्ररक्षक, मैन ऑफ द मैच, मैन ऑफ द सीरीज और कई अन्य पुरस्कार दिए जाएंगे।</li>
+                <li>समिति के पास टूर्नामेंट की योजना में परिवर्तन या टूर्नामेंट के दौरान अचानक आवश्यक बदलाव करने का पूरा अधिकार है।</li>
+                <li>टीम के प्रतिभागियों द्वारा सुरक्षा प्रोटोकॉल/ प्रक्रियाओं का पालन किया जाना चाहिए।</li>
+                <li>टीम उचित अनुशासन में होनी चाहिए और उनके पास उचित किट होनी चाहिए।</li>
+                <li>टूर्नामेंट के दौरान किसी भी विवाद के लिए समिति जिम्मेदार नहीं होगी।</li>
+                <li>अंपायर का निर्णय अंतिम व मान्य होगा।</li>
+              </ol>
+
+              <h2 className="text-2xl font-normal text-center mt-12 mb-6">कॉर्पोरेट लीग</h2>
+              <ol className="list-decimal p-3 list-inside space-y-4 text-base">
+                <li>टूर्नामेंट एंट्री फीस पच्चीस हज़ार रुपये (रु.25,000/-) मात्र है।</li>
+                <li>टूर्नामेंट सफ़ेद लेदर बॉल से, कलर ड्रेस में खेला जायेगा।</li>
+                <li>जर्सी (T-shirt) समिति द्वारा दी जाएगी, मैचों में इसे पहनना अनिवार्य होगा।</li>
+                <li>टूर्नामेंट के मैच दिन, शाम व रात्रि में दूधिया रोशनी (Light) में खेले जायेंगे।</li>
+                <li>टूर्नामेंट T-20 फॉर्मेट में BCCI और ICC के द्वारा निर्धारित नियमों के अनुसार खेला जायेगा।</li>
+                <li>यह लीग कम नॉक-आउट टूर्नामेंट है।</li>
+                <li>एक खिलाडी को टूर्नामेंट की किसी एक लीग में एक ही टीम से खेलने का अधिकार होगा।</li>
+                <li>किसी भी विभागीय कर्मचारी (सरकारी कर्मचारी) को इस लीग में खेलने की अनुमति नहीं हैं।</li>
+                <li>रणजी ट्रॉफी, लिस्ट A और उससे ऊपर के खिलाड़ियों को इस लीग में खेलने अनुमति नहीं है।</li>
+                <li>पिछले 5 वर्षों से पहले या MP स्तर या किसी अन्य राज्य स्तर पर खेलने वाले खिलाड़ी ही इस लीग में खेलने के पात्र होंगे।</li>
+                <li>कोई भी खिलाड़ी पिछले 3 वर्षों में किसी भी पंजीकृत अकादमी/ क्लब का हिस्सा नहीं होना चाहिए।</li>
+                <li>टीम प्रारम्भ में दिये गये 15 खिलाडियों की सूचि में से ही अंतिम 11 खिलाडियों का चयन करेगी, 15 खिलाडियों की सूचि से बाहर का खिलाडी मान्य नहीं है।</li>
+                <li>टीमों को आवंटित मैच समय के 1 घंटा पहले आयोजन स्थल पर पहुंचना अनिवार्य है।</li>
+                <li>यदि मैच किसी भी मौसम से संबंधित स्थिति (बारिश) या किसी तकनीकी त्रुटि के कारण धुल जाता है। तो मैच का निर्णय अंपायर व समिति अनुसार होगा।</li>
+                <li>फाइनल टीम को ट्रॉफी और नकद पुरस्कार से सम्मानित किया जाएगा।</li>
+                <li>सर्वश्रेष्ठ बल्लेबाज, सर्वश्रेष्ठ गेंदबाज, सर्वश्रेष्ठ विकेट कीपर, सर्वश्रेष्ठ क्षेत्ररक्षक, मैन ऑफ द मैच, मैन ऑफ द सीरीज और कई अन्य पुरस्कार दिए जाएंगे।</li>
+                <li>समिति के पास टूर्नामेंट की योजना में परिवर्तन या टूर्नामेंट के दौरान अचानक आवश्यक बदलाव करने का पूरा अधिकार है।</li>
+                <li>टीम के प्रतिभागियों द्वारा सुरक्षा प्रोटोकॉल/ प्रक्रियाओं का पालन किया जाना चाहिए।</li>
+                <li>टीम उचित अनुशासन में होनी चाहिए और उनके पास उचित किट होनी चाहिए।</li>
+                <li>टूर्नामेंट के दौरान किसी भी विवाद के लिए समिति जिम्मेदार नहीं होगी।</li>
+                <li>अंपायर का निर्णय अंतिम व मान्य होगा।</li>
+              </ol>
+            </div>
+          )}
+        </div>
+
+        {/* Footer with Agreement Checkbox and Buttons - Only show when scrolled to bottom */}
+        <div className="border-t bg-gray-50">
+          {showTickBox ? (
+            <div className="p-6 transition-all duration-300 ease-in-out opacity-100">
+              <div className="flex items-center mb-4">
+                <input
+                  type="checkbox"
+                  id="rulesAgreement"
+                  checked={hasReadRules}
+                  onChange={(e) => setHasReadRules(e.target.checked)}
+                  className="mr-3 h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                />
+                <label htmlFor="rulesAgreement" className="text-sm text-gray-700">
+                  I have read and understood all the rules and regulations mentioned above and agree to abide by them while applying for the tournament.
+                </label>
+              </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={onClose}
+                  className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleProceed}
+                  disabled={!hasReadRules}
+                  className={`px-6 py-2 rounded-lg text-white transition-colors duration-200 ${
+                    hasReadRules
+                      ? 'bg-orange-500 hover:bg-orange-600'
+                      : 'bg-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  Proceed to Application
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 bg-orange-50 text-center transition-all duration-300 ease-in-out">
+              <p className="text-sm text-orange-700">
+                📜 Please scroll down to read all rules and regulations to proceed with your application
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RulesModal;

@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ExploreMore from './ExploreMore';
-import { Link } from 'react-router-dom';
+import RulesModal from './RulesModal';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Homepage = () => {
+  const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleApplyNow = () => {
+    setIsRulesModalOpen(true);
+  };
+
+  const handleProceedToApplication = () => {
+    setIsRulesModalOpen(false);
+    navigate('/register');
+  };
+
+  const handleCloseModal = () => {
+    setIsRulesModalOpen(false);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
@@ -33,11 +50,13 @@ const Homepage = () => {
           B.D.C.A Affiliated, All India level day night cricket T-20 & 50 over Tournament
         </p>
         <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
-          <Link to="/register">
-            <button className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600">
-              Apply Now
-            </button>
-          </Link>
+          <button 
+            onClick={handleApplyNow}
+            data-apply-now
+            className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600"
+          >
+            Apply Now
+          </button>
           <Link to="/regulations">
             <button className="border border-orange-500 text-orange-500 px-6 py-2 rounded-full hover:bg-orange-100">
               View Rules & Regulations
@@ -48,6 +67,13 @@ const Homepage = () => {
 
       {/* Explore More Section */}
       <ExploreMore />
+
+      {/* Rules Modal */}
+      <RulesModal 
+        isOpen={isRulesModalOpen}
+        onClose={handleCloseModal}
+        onProceed={handleProceedToApplication}
+      />
 
       {/* Footer */}
       <Footer />
